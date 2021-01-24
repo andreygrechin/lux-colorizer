@@ -1,0 +1,42 @@
+[doc Demonstrate a failure]
+
+[global fail_pattern=[Ee][Rr][Rr][Oo][Rr]]
+[global eprompt=\d+>\s]
+
+[doc2 Provoke a failure to get something interesting in the logs]
+
+[shell calculator]
+    -$fail_pattern|SH-PROMPT:
+    !erl
+
+    # Multi-line expect
+    """?
+    Eshell.*
+    $eprompt
+    """
+
+    # Multi-line send
+    """!
+    2+3.
+    6+7.
+    """
+
+    # Ignore output between 5 and 13
+    ?5
+    ?13
+
+    # Shorten the match timeout as we deliberately will demo a fail
+    [timeout 2]
+    !5+13.
+    # Next line will fail
+    ?19
+
+[cleanup]
+    # Save logs at fail
+    """!
+    if [ "$LUX_START_REASON" = "fail" ]; then
+      mkdir -p $LUX_EXTRA_LOGS/erl;
+      cp -r ./logs/* $LUX_EXTRA_LOGS/erl;
+    fi; true
+    """
+    ?SH-PROMPT:

@@ -1,0 +1,61 @@
+{
+    "name": "lux-colorizer",
+    "version": "0.1.0",
+    "publisher": "andreygrechin",
+    "engines": {
+        "vscode": "^1.52.0"
+    },
+    "license": "SEE LICENSE IN LICENSE",
+    "displayName": "Lux Colorizer",
+    "description": "Language extension to colorize Lux (LUcid eXpect scripting) test automation framework script syntax.",
+    "categories": [
+        "Programming Languages",
+        "Snippets"
+    ],
+    "keywords": [
+        "lux",
+        "nso",
+        "colorizer",
+        "syntax",
+        "highlight"
+    ],
+    "preview": true,
+    "contributes": {
+        "languages": [
+            {
+                "id": "lux",
+                "aliases": [
+                    "Lux (LUcid eXpect scripting)",
+                    "lux"
+                ],
+                "extensions": [
+                    "lux"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "lux",
+                "scopeName": "source.lux",
+                "path": "./syntaxes/lux.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "lux",
+                "path": "./snippets/snippets.json"
+            }
+        ]
+    },
+    "qna": "https://github.com/andreygrechin/lux-colorizer/issues",
+    "icon": "assets/images/icon256x256.png",
+    "bugs": {
+        "url": "https://github.com/andreygrechin/lux-colorizer/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andreygrechin/lux-colorizer.git"
+    },
+    "homepage": "https://github.com/andreygrechin/lux-colorizer/"
+}

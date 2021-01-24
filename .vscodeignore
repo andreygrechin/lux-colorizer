@@ -1,0 +1,8 @@
+.github/**
+.vscode/**
+assets/examples/**
+lux/**
+.editorconfig
+.gitignore
+.vscodeignore
+lux-colorizer.code-workspace

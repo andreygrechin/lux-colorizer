@@ -1,0 +1,400 @@
+#
+# Note: Names of colors are given for Monakai color theme.
+#
+
+##########################################
+# Comments. Grey.
+##########################################
+
+# [doc grey] #something_grey
+# !grey
+# ?grey
+# grey
+ # [doc grey] #something_grey
+  # !grey
+   # ?grey
+    # grey
+#0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+#!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+
+##########################################
+# Comments. Not Grey
+##########################################
+
+[global fail_pattern=[Ee][Rr][Rr][Oo][Rr]]
+[doc White white] #something_white
+[doc # White #white]
+!blu#e #blue
+?yel#low #yellow
+
+##########################################
+# Send single line. Blue.
+##########################################
+
+!
+~
+!a
+~a
+! a
+~ a
+ !a
+ ~a
+ ! a
+ ~ a
+!abc
+~abc
+! abc
+~ abc
+ !abc
+ ~abc
+ ! abc
+ ~ abc
+!1
+~1
+! 1
+~ 1
+ !1
+ ~1
+ ! 1
+ ~ 1
+!0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+!!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+!0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+!!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+!blue
+
+##########################################
+# Send single line. Continuation.
+##########################################
+
+!
+white
+!blue
+white
+!blue\
+blue\
+blue
+white
+!blue\\
+white
+!$orange
+white
+!blue$orange
+white
+!blue$orange\
+blue
+!blue$orange\\
+white
+!$orange blue
+white
+
+##########################################
+# Send multiline. Blue.
+##########################################
+
+"""!a"""
+a
+"""!abc"""
+a
+"""!abc
+abc"""
+a
+"""!abc
+abc
+"""
+a
+"""~a"""
+a
+"""~abc"""
+a
+"""~abc
+abc"""
+a
+"""~abc
+abc
+"""
+a
+ """!a"""
+ a
+ """!abc"""
+ a
+ """!abc
+ abc"""
+ a
+ """!abc
+ abc
+ """
+ a
+ """! a"""
+ a
+ """! abc"""
+ a
+ """! abc
+ abc"""
+ a
+ """! abc
+ abc
+ """
+ a
+"""!0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+"""
+a
+
+##########################################
+# Variables. Blue and orange.
+##########################################
+
+!blue$orange$orangeorange$_orange$ blue$orange123 blue
+~1blue$1blue$_orang1e blue$_a123_orange
+"""!blue$orange blue"""
+"""~blue$orange
+$orange
+$
+blue
+blue$orange $orange blue
+blue
+"""
+
+!blue${orange}${orange}orange$_orange$ blue${orange}123 blue
+~1blue$1blue$_orang1e blue$_a123_orange
+"""!blue${orange}blue"""
+"""!blue${orange}
+${orange}
+$
+blue
+blue${orange}${orange} ${orange} ${orange}blue${orange} blue
+blue
+"""
+
+##########################################
+# Exepect single line. Yellow.
+##########################################
+
+?a
+???a
+? a
+??? a
+ ?a
+ ???a
+ ? a
+ ??? a
+?abc
+???abc
+? abc
+??? abc
+ ?abc
+ ???abc
+ ? abc
+ ??? abc
+?1
+???1
+? 1
+??? 1
+ ?1
+ ???1
+ ? 1
+ ??? 1
+?0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+?!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+?0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+?!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+?yellow
+??yellow
+???yellow
+????yellow
+?+yellow
+?++yellow
+-yellow
+--yellow
++yellow
+++yellow
+@yellow
+@@yellow
+
+##########################################
+# Expect single line. Continuation.
+##########################################
+
+?
+white
+?yellow
+white
+?yellow\
+yellow\
+yellow
+white
+?yellow\\
+white
+?$orange
+white
+?yellow$orange
+white
+?yellow$orange\
+yellow
+?yellow$orange\\
+white
+?$orange yellow
+white
+
+##########################################
+# Expect multiline. Yellow.
+##########################################
+
+"""?a"""
+a
+"""?abc"""
+a
+"""?abc
+abc"""
+a
+"""?abc
+abc
+"""
+a
+"""???a"""
+a
+"""???abc"""
+a
+"""???abc
+abc"""
+a
+"""???abc
+abc
+"""
+a
+ """?a"""
+ a
+ """?abc"""
+ a
+ """?abc
+ abc"""
+ a
+ """?abc
+ abc
+ """
+ a
+ """? a"""
+ a
+ """? abc"""
+ a
+ """? abc
+ abc"""
+ a
+ """? abc
+ abc
+ """
+ a
+"""?0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~
+"""
+
+##########################################
+# Variables. Yellow and orange.
+##########################################
+
+?yellow$orange$orangeorange$_orange$ yellow$orange123 yellow
+???1yellow$1yellow$_orang1e yellow$_a123_orange
+"""?yellow$orange yellow"""
+"""???yellow$orange
+$orange
+$
+yellow
+yellow$orange $orange yellow
+yellow
+"""
+
+?yellow${orange}${orange}orange$_orange$ yellow${orange}123 yellow
+???1yellow$1yellow$_orang1e yellow$_a123_orange
+"""?yellow${orange}yellow"""
+"""?yellow${orange}
+${orange}
+$
+yellow
+yellow${orange}${orange} ${orange} ${orange}yellow${orange} yellow
+yellow
+"""
+
+##########################################
+# Keywords. Red.
+##########################################
+
+[doc White white white]
+[doc1 1White white white]
+[doc9 2White white white]
+
+[progress 0 123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]
+[progress !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~]
+
+[newshell abc]
+[shell abc]
+[cleanup abc]
+[include abc]
+[macro abc]
+[endmacro abc]
+[invoke abc]
+[loop abc]
+[endloop abc]
+[local abc]
+[global abc]
+[my abc]
+[doc abc]
+[enddoc abc]
+[timeout abc]
+[sleep abc]
+[progress abc]
+[config abc]
+
+[progress abc\n/n\abc]
+
+[ doc White white white]
+[doc. White white white]
+[docdoc White white white doc]
+[docdoc White [] white doc]
+
+##########################################
+# Variables and meta. Red, white and orange.
+##########################################
+
+[shell 1=test123]
+[shell 123=test123]
+[shell _=test123]
+[shell a=test123]
+[shell A=test123]
+[shell abc=test123]
+[shell Abc=test123]
+[shell ABC=test123]
+[shell _A=test123]
+[shell _Abc=test123]
+[shell $A=test123]
+[shell $Abc=test123]
+[shell $a_bc123=123]
+[global target_dir=../../ncs-run shell]
+[shell 1=$var1]
+[shell 123=$var1]
+[shell _=$var1]
+[shell a=$var1]
+[shell A=$var1]
+[shell abc=$var1]
+[shell Abc=$var1]
+[shell ABC=$var1]
+[shell _A=$var1]
+[shell _Abc=$var1]
+[shell $A=$var1]
+[shell $Abc=$var1]
+[shell $a_bc123=$var1$Var${Var1}]
+[global target_dir=../../ncs-run $var1]
+[shell 1=${var1}]
+[shell 123=${var1}]
+[shell _=${var1}]
+[shell a=${var1}]
+[shell A=${var1}]
+[shell abc=${var1}]
+[shell Abc=${var1}]
+[shell ABC=${var1}]
+[shell _A=${var1}]
+[shell _Abc=${var1}]
+[shell $A=${var1}]
+[shell $Abc=${var1}]
+[shell $a_bc123=${var1}]
+[global target_dir=../../ncs-run ${var1}]

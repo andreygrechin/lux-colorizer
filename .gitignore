@@ -1,0 +1,6 @@
+.DS_Store
+
+lux/
+lux_logs/
+
+*.vsix

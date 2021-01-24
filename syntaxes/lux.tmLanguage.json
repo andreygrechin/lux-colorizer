@@ -1,0 +1,167 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Lux (LUcid eXpect scripting)",
+    "scopeName": "source.lux",
+    "patterns": [
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#meta"
+        },
+        {
+            "include": "#send"
+        },
+        {
+            "include": "#send_multiline"
+        },
+        {
+            "include": "#expect"
+        },
+        {
+            "include": "#expect_multiline"
+        }
+    ],
+    "repository": {
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment.line.lux",
+                    "match": "^\\s*(#.*$)"
+                }
+            ]
+        },
+        "keyword": {
+            "patterns": [
+                {
+                    "name": "keyword.control.lux",
+                    "match": "\\G(newshell|shell|cleanup|include|macro|endmacro|invoke|loop|endloop|local|global|my|doc[0-9]?|enddoc|timeout|sleep|progress|config)(?=\\s)"
+                }
+            ]
+        },
+        "variable_assignment": {
+            "match": "([^\\$0-9\\W]?[_[:alpha:]][_[:alnum:]]*)=((\\${[_[:alpha:]][_[:alnum:]]*})|(\\$[_[:alpha:]][_[:alnum:]]*)|([^\\$].*))\\b",
+            "captures": {
+                "1": {
+                    "name": "storage.type.lux"
+                },
+                "3": {
+                    "name": "string.regexp.lux"
+                },
+                "4": {
+                    "name": "string.regexp.lux"
+                },
+                "5": {
+                    "name": "string.regexp.lux"
+                }
+            }
+        },
+        "meta": {
+            "begin": "^\\s*(\\[)",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.type.lux"
+                }
+            },
+            "end": "(\\]$|\\])\\s*$",
+            "endCaptures": {
+                "1": {
+                    "name": "storage.type.lux"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#keyword"
+                },
+                {
+                    "include": "#variable"
+                }
+            ]
+        },
+        "expect": {
+            "name": "string.regexp.lux",
+            "begin": "^\\s*(\\?\\+|\\?{1,3}|-|\\+|@)",
+            "beginCaptures": {
+                "1": {
+                    "name": "invalid.illegal.lux"
+                }
+            },
+            "end": "(?<![^\\\\]\\\\)\n",
+            "patterns": [
+                {
+                    "include": "#variable"
+                }
+            ]
+        },
+        "expect_multiline": {
+            "begin": "^\\s*(\"\"\")(\\?\\+|\\?{1,3}|-|\\+|@)",
+            "beginCaptures": {
+                "1": {
+                    "name": "string.regexp.lux"
+                },
+                "2": {
+                    "name": "invalid.illegal.lux"
+                }
+            },
+            "end": "\\s*\"\"\"",
+            "endCaptures": {
+                "0": {
+                    "name": "string.regexp.lux"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#variable"
+                }
+            ],
+            "name": "string.regexp.lux"
+        },
+        "send": {
+            "name": "storage.type.lux",
+            "begin": "^\\s*([!~])",
+            "beginCaptures": {
+                "1": {
+                    "name": "invalid.illegal.lux"
+                }
+            },
+            "end": "(?<![^\\\\]\\\\)\n",
+            "patterns": [
+                {
+                    "include": "#variable"
+                }
+            ]
+        },
+        "send_multiline": {
+            "begin": "^\\s*(\"\"\")([!~])",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.type.lux"
+                },
+                "2": {
+                    "name": "invalid.illegal.lux"
+                }
+            },
+            "end": "\\s*\"\"\"",
+            "endCaptures": {
+                "0": {
+                    "name": "storage.type.lux"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#variable"
+                }
+            ],
+            "name": "storage.type.lux"
+        },
+        "variable": {
+            "patterns": [
+                {
+                    "name": "variable.language.lux",
+                    "match": "\\$\\{[_[:alpha:]][_[:alnum:]]*\\}|\\$[_[:alpha:]][_[:alnum:]]*",
+                    "comment": "Both $Var1 and ${Var1} styles"
+                }
+            ]
+        }
+    }
+}

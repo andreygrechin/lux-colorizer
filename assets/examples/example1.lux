@@ -1,0 +1,21 @@
+# Example 1
+[doc Checking version, config register and reachability of cisco.com]
+[global device=rt]
+[shell shell1]
+    [local ping_dst=cisco.com]
+    [progress Cisco ISR router checkup]
+    !ssh $device
+    ?.*#
+    !term length 0
+    ?.*#
+    !show version
+    """???
+    Cisco IOS XE Software, Version 16.12.04
+    Cisco IOS Software [Gibraltar], ISR Software (ARMV8EL_LINUX_IOSD-UNIVERSALK9_IAS-M), Version 16.12.4, RELEASE SOFTWARE (fc5)
+    """
+    ???Configuration register is 0x2102
+    ?.*#
+    !ping $ping_dst
+    ???Success rate is 100 percent (5/5)
+    ?.*#
+    [progress ISR router checkup:OK]

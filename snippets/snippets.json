@@ -1,0 +1,38 @@
+{
+    "Displays progress strings": {
+        "prefix": "[progress ]",
+        "body": [
+            "[progress $1]",
+            "$0",
+            "[progress $1:OK"
+        ],
+        "description": "A progress declaration"
+    },
+    "Declare a macro": {
+        "prefix": "[macro ]",
+        "body": [
+            "[macro $1]",
+            "$0",
+            "[endmacro"
+        ],
+        "description": "A macro declaration"
+    },
+    "Declare a loop": {
+        "prefix": "[loop ]",
+        "body": [
+            "[loop $1]",
+            "$0",
+            "[endloop"
+        ],
+        "description": "A loop declaration"
+    },
+    "Declare a multi-line docstring": {
+        "prefix": "[doc]",
+        "body": [
+            "[doc]",
+            "$0",
+            "[enddoc"
+        ],
+        "description": "A multi-line documentation declaration"
+    }
+}

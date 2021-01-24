@@ -1,0 +1,9 @@
+[doc Demonstrate a skipped test]
+
+[doc2 Show examples of config settings]
+
+[config skip=SKIP_JAVA]
+[config skip_unless=TEST_SUNOS]
+
+[shell foo]
+    ?bar

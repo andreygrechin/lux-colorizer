@@ -1,6 +1,5 @@
 Using `Lux` for fast transition from manual to automated testing
 ================================================================
-
 `Lux` scripts by nature are a simple way to move from manual testing to
 consistent, repeatable, and automated testing while keeping time to write tests
 to a minimum. A little or no experience is required to start. However,

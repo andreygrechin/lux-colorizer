@@ -1,9 +1,20 @@
-# Using `Lux` for fast transition from manual to automated testing
+Using `Lux` for fast transition from manual to automated testing
+================================================================
 
 `Lux` scripts by nature are a simple way to move from manual testing to
 consistent, repeatable, and automated testing while keeping time to write tests
 to a minimum. A little or no experience is required to start. However,
 understanding some basic regular expression patterns will benefit you.
+
+`Lux` is a universal system-level test tool written in Erlang/OTP by Håkan
+Mattsson and other contributors. Based on
+[expect](http://www.nist.gov/el/msid/expect.cfm)-like pattern, `Lux` offers
+simplified syntax, regular expressions support, switching between multiple
+concurrent sessions, extensive logging, post mortem analysis, debugging, and
+more. Testing with `Lux` can be a part of more valuable processes, like
+developing new services for Cisco NSO, CI/CD pipeline testing, troubleshooting,
+etc. It is well known for test automation for developing Cisco Network Service
+Orchestrator (NSO) with 4500 test cases per run.
 
 Firstly, you need to collect some raw input and output strings to transform them
 into a `Lux` script. For example, connect to a host and do a manual test as you
@@ -54,7 +65,8 @@ multiple concurrent sessions, extensive logging, post mortem analysis,
 debugging, and more, check the
 [official documentation](https://github.com/hawk/lux/blob/master/doc/lux.md).
 
-## lux-colorizer, Lux Syntax Highlight VS Code Extension
+lux-colorizer, Lux Syntax Highlight VS Code Extension
+-----------------------------------------------------
 
 Each `Lux` script may have hundreds+ of send/expect lines and comments, which
 are hard to read and work with. The extension significantly increases
@@ -64,7 +76,8 @@ will help test writers to produce test in a more structured format and see
 syntax errors early before run, increasing the speed of writing, reviewing, and
 maintaining test scripts.
 
-## Useful References
+Useful References
+-----------------
 
 1. [Lux overview presentation from authors](https://www.youtube.com/watch?v=Nu15YOpmCKQ)
 1. [Network Automation Delivery Model Testing](https://developer.cisco.com/docs/network-automation-delivery-model/#!test/test)

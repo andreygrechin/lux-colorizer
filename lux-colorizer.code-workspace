@@ -19,6 +19,7 @@
 			"endloop",
 			"endmacro",
 			"jumpbox",
+			"markdownlint",
 			"multiline",
 			"newshell"
 		]

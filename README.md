@@ -12,7 +12,7 @@ Orchestrator (NSO) with 4500 test cases per run.
 
 ![An example using Monakai color theme](https://github.com/andreygrechin/lux-colorizer/raw/main/assets/images/example-animated.gif)
 
-Some explanations "Why `Lux`" can be found [here](https://github.com/andreygrechin/lux-colorizer/raw/main/USECASE.md).
+Some explanations "Why `Lux`" can be found [here](https://github.com/andreygrechin/lux-colorizer/blob/main/USECASE.md).
 
 For more on `Lux` features, please check
 [the official documentation](https://github.com/hawk/lux/blob/master/doc/lux.md).
@@ -37,12 +37,6 @@ After the installation, the extension will be enabled automatically.
 To use snippets, start typing a meta statement, like `[loop]`, and VS Code will
 offer possible options. Use TAB to autocomplete a statement and jumping between
 input fields.
-
-## Release Notes
-
-### [0.1.0] - 2021-01-24
-
-Initial release
 
 ## Useful References
 

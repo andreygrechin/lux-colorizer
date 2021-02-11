@@ -35,7 +35,7 @@
             "patterns": [
                 {
                     "name": "keyword.control.lux",
-                    "match": "\\G(newshell|shell|cleanup|include|macro|endmacro|invoke|loop|endloop|local|global|my|doc[0-9]?|enddoc|timeout|sleep|progress|config)(?=\\s)"
+                    "match": "\\G(newshell|shell|cleanup|include|macro|endmacro|invoke|loop|endloop|local|global|my|doc[0-9]?|enddoc|timeout|sleep|progress|config)(?=\\s|\\])"
                 }
             ]
         },

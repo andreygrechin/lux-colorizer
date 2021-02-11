@@ -64,6 +64,19 @@ will help test writers to produce test in a more structured format and see
 syntax errors early before run, increasing the speed of writing, reviewing, and
 maintaining test scripts.
 
+## Related Sandbox
+
+Cisco DevNet organization provides a great selection of always-on and
+reservation-based sandboxes to test different solutions, products, and APIs,
+including
+[Cisco NSO](https://devnetsandbox.cisco.com/RM/Diagram/Index/43964e62-a13c-4929-bde7-a2f68ad6b27c?diagramType=Topology).
+
+Unfortunately, existing NSO sandboxes don't have `lux` package installed, to the best
+of my knowledge. Moreover, users cannot add `lux` package themselves due to
+security policies. To use `lux` user have to build own environment and install
+`lux` using standard
+[installation guidelines](https://github.com/hawk/lux/blob/master/INSTALL.md).
+
 ## Useful References
 
 1. [Lux overview presentation from authors](https://www.youtube.com/watch?v=Nu15YOpmCKQ)

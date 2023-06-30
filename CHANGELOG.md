@@ -2,7 +2,12 @@
 
 All notable changes to the "lux-colorizer" extension will be documented in this file.
 
-## [Unreleased]
+## [1.0.0] - 2023-06-30
+
+### Added
+
+- Add 'luxinc' extension to support syntax color and snippets (contributed by
+ [@ken2057](https://github.com/ken2057))
 
 ## [0.9.0] - 2021-02-11
 

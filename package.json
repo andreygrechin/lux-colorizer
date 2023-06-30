@@ -1,6 +1,6 @@
 {
     "name": "lux-colorizer",
-    "version": "0.9.1",
+    "version": "1.0.0",
     "publisher": "andreygrechin",
     "engines": {
         "vscode": "^1.53.0"

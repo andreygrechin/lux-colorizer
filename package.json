@@ -1,6 +1,6 @@
 {
     "name": "lux-colorizer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "andreygrechin",
     "engines": {
         "vscode": "^1.53.0"
@@ -8,6 +8,8 @@
     "license": "SEE LICENSE IN LICENSE",
     "displayName": "Lux Colorizer",
     "description": "Language extension to colorize Lux (LUcid eXpect scripting) test automation framework script syntax.",
+    "activationEvents": [],
+    "main": "./out/extension.js",
     "categories": [
         "Programming Languages",
         "Snippets"
@@ -32,7 +34,11 @@
                     "lux",
                     "luxinc"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "dark": "./assets/images/icon256x256.png",
+                    "light": "./assets/images/icon256x256.png"
+                }
             }
         ],
         "grammars": [
@@ -58,5 +64,26 @@
         "type": "git",
         "url": "https://github.com/andreygrechin/lux-colorizer.git"
     },
-    "homepage": "https://github.com/andreygrechin/lux-colorizer/"
+    "homepage": "https://github.com/andreygrechin/lux-colorizer/",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "20.2.5",
+        "@types/vscode": "^1.53.0",
+        "@typescript-eslint/eslint-plugin": "^5.59.8",
+        "@typescript-eslint/parser": "^5.59.8",
+        "@vscode/test-electron": "^2.3.2",
+        "eslint": "^8.41.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.2.0",
+        "typescript": "^5.1.3"
+    }
 }

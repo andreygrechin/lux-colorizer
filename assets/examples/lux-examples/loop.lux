@@ -1,7 +1,17 @@
 [doc Demo the loop statement]
 
 [global file=loop_break.tmp]
+[my file3=loop_break.tmp]
+[local file4=loop_break.tmp]
 
+[include intro.lux]
+[include ../test.luxinc]
+
+[macro a test file2]
+    !echo 123
+    ?$file2 $test $file $file3 $file4 $test5
+    ?$test_here
+[endmacro]
 ###
 ### Vanilla style of loops
 ###

@@ -38,6 +38,16 @@ To use snippets, start typing a meta statement, like `[loop]`, and VS Code will
 offer possible options. Use TAB to autocomplete a statement and jumping between
 input fields.
 
+## How to contribute
+
+1. Clone the repo
+2. Run `npm install`
+3. Add your magic
+4. Test extension (following [this guide](https://code.visualstudio.com/api/working-with-extensions/testing-extension)) 
+5. (optional) To build extension file
+    1. Run `npm install -g @vscode/vsce`
+    2. Run `vsce package` (it will build .vsix file)
+
 ## Useful References
 
 1. Lux

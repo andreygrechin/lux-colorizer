@@ -5,8 +5,8 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { isPositionInString } from './util';
-import { COMMENT } from './const';
+import { isPositionInString, isSkipLine, openTextDocument } from './util';
+import { COMMENT, PATH_SEPERATOR } from './const';
 
 export interface GoDefinitionInformation {
     file: string;
@@ -17,11 +17,11 @@ export interface GoDefinitionInformation {
 }
 
 interface WordType {
-    type: "variable" | "macro" | undefined
+    type: "variable" | "macro" | "file" | undefined
     value: string
 }
 
-export function definitionLocation(
+async function definitionLocation(
     document: vscode.TextDocument,
     position: vscode.Position,
     token: vscode.CancellationToken
@@ -30,9 +30,6 @@ export function definitionLocation(
     if (wordType == undefined) {
         return Promise.resolve(null)
     }
-
-    console.log(wordType);
-    
 
     // multiple regex to find different case
     var regs = new Array<RegExp>()
@@ -46,7 +43,24 @@ export function definitionLocation(
         case "macro":
             regs.push(new RegExp("^\\[(?:macro)\\s+" + wordType.value + "[\\s\\]]"))
             break
-    
+        case "file":
+            var result = await openTextDocument(document.uri.path, wordType.value)
+            var newDoc = result[0]
+            var err = result[1]
+            
+            if (err != "" || newDoc == undefined) {
+                throw err
+            }
+            var defInfo: GoDefinitionInformation = {
+                column: 0,
+                line: 0,
+                file: newDoc.uri.path,
+                name: "",
+                declarationlines: [],
+            }
+            return defInfo
+            
+
         default:
             return Promise.resolve(null)
     }
@@ -79,20 +93,10 @@ async function find_declaretion(
         
         const included = /^\[include (.+)\]/g.exec(lineTextTrimed)
         if (included != null) {
-            var path = document.uri.path
-            path = path.substring(0, path.lastIndexOf("/"));
-            const uri = vscode.Uri.file(path + '/' + included[1])
+            var result = await openTextDocument(document.uri.path, included[1])
+            var newDoc= result[0]
+            var err = result[1]
 
-            var newDoc: vscode.TextDocument | any = undefined
-            var err: string = ""
-
-            await vscode.workspace.openTextDocument(uri)
-            .then((includedDoc) => {
-                newDoc = includedDoc
-            }, (reason) => {
-                err = String(reason)
-                err = err.includes("cannot open file") ? "[include " + included[1] + "] file not found" : err
-            })
             if (err != "" || newDoc == undefined) {
                 throw err
             }
@@ -117,17 +121,11 @@ async function find_declaretion(
     return Promise.resolve(null)
 }
 
-function isSkipLine(line: string) {
-    if (line == "") return true
-    return !line.startsWith('[')
-    // return !(line.match(/^[!#?]/g) == null)
-}
-
 function getWordFromPosition(
     document: vscode.TextDocument,
     position: vscode.Position
 ): WordType | undefined {
-    const wordRange = document.getWordRangeAtPosition(position, /[-_\w]+/g)
+    const wordRange = document.getWordRangeAtPosition(position, /[-_\.\/\w]+/g)
     const lineText = document.lineAt(position.line).text.trim()
     const word = wordRange ? document.getText(wordRange) : ''
     if (
@@ -141,6 +139,13 @@ function getWordFromPosition(
 
     var wType: WordType = {type: undefined, value: word}
     
+    // check is file path
+    const reFilePath = new RegExp("\\[include\\s+" + word + "\\s*\\]")
+    if (lineText.match(reFilePath)) {
+        wType.type = "file"
+        return wType
+    }
+
     // check is variable
     if (lineText.includes('$' + word)) {
         wType.type = "variable"
@@ -152,7 +157,7 @@ function getWordFromPosition(
     }
 
     // check macro
-    const reMacro = new RegExp("\\[invoke " + word) 
+    const reMacro = new RegExp("\\[invoke\\s+" + word) 
 
     if (lineText.match(reMacro)) {
         wType.type = "macro"

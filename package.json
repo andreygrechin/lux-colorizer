@@ -53,6 +53,18 @@
                 "language": "lux",
                 "path": "./snippets/snippets.json"
             }
+        ],
+        "configuration": [
+            {
+                "title": "Custom Lux variable value",
+                "properties": {
+                    "lux.variables": {
+                        "type": "object",
+                        "default": {},
+                        "description": "Custom variable value (in case of environment variable e.g. $TEST_DIR)"
+                      }
+                }
+            }
         ]
     },
     "qna": "https://github.com/andreygrechin/lux-colorizer/issues",

@@ -5,7 +5,7 @@
  *--------------------------------------------------------*/
 
 import * as vscode from 'vscode';
-import { isPositionInString, isSkipLine, openTextDocument } from './util';
+import { getCustomVariable, getVariableInString, isSkipLine, openTextDocument } from './util';
 import { COMMENT, PATH_SEPERATOR } from './const';
 
 export interface GoDefinitionInformation {
@@ -36,38 +36,36 @@ async function definitionLocation(
 
     switch (wordType.type) {
         case "variable":
-            regs.push(new RegExp("^\\[(?:global|local|my)\\s+" + wordType.value + "\\s*="))
-            regs.push(new RegExp("^\\[macro\\s+[\\w-_\\s]+" + wordType.value + "[\\s\\]]"))
+            regs.push(getRegexFindVariable(wordType.value))
+            regs.push(new RegExp("^\\[macro\\s+[\\w-_\\s]+"
+                                 + wordType.value
+                                 + "[\\s\\]]"))
             regs.push(new RegExp("^\\[loop\\s+" + wordType.value + "\\s+"))
             break
         case "macro":
-            regs.push(new RegExp("^\\[(?:macro)\\s+" + wordType.value + "[\\s\\]]"))
+            regs.push(new RegExp("^\\[(?:macro)\\s+"
+                                 + wordType.value
+                                 + "[\\s\\]]"))
             break
         case "file":
-            var result = await openTextDocument(document.uri.path, wordType.value)
-            var newDoc = result[0]
-            var err = result[1]
-            
-            if (err != "" || newDoc == undefined) {
-                throw err
+            const result = await file_handler(wordType, document)
+            if (result == null) {
+                return Promise.resolve(null)
             }
-            var defInfo: GoDefinitionInformation = {
-                column: 0,
-                line: 0,
-                file: newDoc.uri.path,
-                name: "",
-                declarationlines: [],
-            }
-            return defInfo
-            
+            return result
 
         default:
             return Promise.resolve(null)
     }
 
-    return find_declaretion(document, document.lineCount - 1, wordType.value, regs)
+    return find_declaretion(document,
+                            document.lineCount - 1,
+                            wordType.value,
+                            regs)
 }
 
+// TODO: check loop file including
+// TODO: file in [include xxx] need to check in custom variable
 async function find_declaretion(
     document: vscode.TextDocument,
     line: number,
@@ -97,14 +95,15 @@ async function find_declaretion(
             var newDoc= result[0]
             var err = result[1]
 
-            if (err != "" || newDoc == undefined) {
-                throw err
-            }
-            
-            var includeResult = await find_declaretion(newDoc, newDoc.lineCount - 1, word, regs)
-            if (includeResult != null) {
-                return includeResult
-            }
+            if (err == "" && newDoc != undefined) {
+                var includeResult = await find_declaretion(newDoc, 
+                                                           newDoc.lineCount - 1,
+                                                           word,
+                                                           regs)
+                if (includeResult != null) {
+                    return includeResult
+                }
+            }            
         }
 
         for (let regIdx = 0; regIdx < regs.length; regIdx++) {
@@ -140,9 +139,10 @@ function getWordFromPosition(
     var wType: WordType = {type: undefined, value: word}
     
     // check is file path
-    const reFilePath = new RegExp("\\[include\\s+" + word + "\\s*\\]")
+    const reFilePath = new RegExp("\\[include\\s+")
     if (lineText.match(reFilePath)) {
         wType.type = "file"
+        wType.value = lineText
         return wType
     }
 
@@ -167,7 +167,98 @@ function getWordFromPosition(
     return undefined
 }
 
+async function file_handler(
+    wordType: WordType,
+    document: vscode.TextDocument,
+): Promise<GoDefinitionInformation | undefined> {
+    // for now expecting 1 variable in include statement only
+    const rVar = getVariableInString(wordType.value)
+    const varName = rVar[0]
+    const varRaw = rVar[1]
+    var filePath = getPathFromInclude(wordType.value)
+    if (filePath == undefined) {
+        throw "Invalid file path"
+    }
 
+    console.log(varName, varRaw, filePath);
+
+    if (varName != undefined && varRaw != undefined) {
+        var cusVar = getCustomVariable(varName)
+        
+        if (cusVar == undefined) {
+            throw "No custom variable for " + varName
+
+            // TODO: handle no custom variable defined, check in orther included files
+
+            // const ERR_NOT_FOUND = "Variable " + varName + " not found"
+
+            // const declareReuslt = 
+            //     await find_declaretion(document,
+            //                         document.lineCount - 1,
+            //                         varName,
+            //                         new Array<RegExp>(
+            //                             getRegexFindVariable(varName)))
+            // console.log("declaretion", declareReuslt);
+            
+            // if (declareReuslt == undefined) {
+            //     throw ERR_NOT_FOUND
+            // }
+            // const declareDoc = await openTextDocument(declareReuslt.file, "")
+            // const declareTextDoc = declareDoc[0] 
+            // const errDoc = declareDoc[1]
+            
+            // if (errDoc != "" || declareTextDoc == undefined) {
+            //     throw errDoc
+            // }
+            // const declareLineText = declareTextDoc.document
+            //                                         .lineAt(declareReuslt.line)
+            //                                         .text
+            //                                         .strip()
+            // const value = getValueFromDeclaretion(declareLineText)
+            // if (value == undefined) {
+            //     throw ERR_NOT_FOUND
+            // }
+            // cusVar = value[1]
+        }
+        
+        filePath = filePath.replace(varRaw, cusVar)
+        console.log(filePath, cusVar);
+        
+    }
+
+    const result = await openTextDocument(document.uri.path, filePath)
+    const newDoc = result[0]
+    const err = result[1]
+    
+    if (err != "" || newDoc == undefined) {
+        throw err
+    }
+    const defInfo: GoDefinitionInformation = {
+        column: 0,
+        line: 0,
+        file: newDoc.uri.path,
+        name: "",
+        declarationlines: [],
+    }
+
+    return defInfo
+}
+
+function getRegexFindVariable(word: string): RegExp {
+    return new RegExp("^\\[(?:global|local|my)\\s+" + word + "\\s*=")
+}
+
+function getValueFromDeclaretion(text: string): string | undefined {
+    const reGetDeclareValue = /\[\w+\s+[-_\w]+\s*=\s*([^\]]+)\]/g 
+    const r = reGetDeclareValue.exec(text)
+    return (r == null) ? undefined : r[1] 
+}
+
+function getPathFromInclude(text: string): string | undefined {
+    const reGetIncludePath = /\[include\s+([^\]\s]+)\s*\]/g 
+    const r = reGetIncludePath.exec(text)
+    return (r == null) ? undefined : r[1] 
+}
 
 export class LuxDefinitionProvider implements vscode.DefinitionProvider {
     public provideDefinition(
@@ -181,7 +272,8 @@ export class LuxDefinitionProvider implements vscode.DefinitionProvider {
                     return Promise.reject("invalid");
                 }
                 const definitionResource = vscode.Uri.file(definitionInfo.file);
-                const pos = new vscode.Position(definitionInfo.line, definitionInfo.column);
+                const pos = new vscode.Position(definitionInfo.line,
+                                                definitionInfo.column);
                 return new vscode.Location(definitionResource, pos);
             },
             (err) => {

@@ -14,17 +14,25 @@ export function getExtensionCommands(): any[] {
 		return [] 
 	}
 
-	const extensionCommands: any[] = pkgJSON.contributes.commands.filter((x: any) => x.command !== 'go.show.commands');
+	const extensionCommands: any[] =
+            pkgJSON.contributes
+                    .commands
+                    .filter((x: any) => x.command !== 'go.show.commands');
 	return extensionCommands;
 }
 
-export function isPositionInString(document: vscode.TextDocument, position: vscode.Position): boolean {
+export function isPositionInString(
+    document: vscode.TextDocument,
+    position: vscode.Position
+): boolean {
 	const lineText = document.lineAt(position.line).text;
 	const lineTillCurrentPosition = lineText.substr(0, position.character);
 
 	// Count the number of double quotes in the line till current position. Ignore escaped double quotes
-	let doubleQuotesCnt = (lineTillCurrentPosition.match(/\"/g) || []).length;
-	const escapedDoubleQuotesCnt = (lineTillCurrentPosition.match(/\\\"/g) || []).length;
+	let doubleQuotesCnt =
+        (lineTillCurrentPosition.match(/\"/g) || []).length;
+	const escapedDoubleQuotesCnt =
+        (lineTillCurrentPosition.match(/\\\"/g) || []).length;
 
 	doubleQuotesCnt -= escapedDoubleQuotesCnt;
 	return doubleQuotesCnt % 2 === 1;
@@ -46,7 +54,9 @@ export async function openTextDocument(
         newDoc = includedDoc
     }, (reason) => {
         err = String(reason)
-        err = err.includes("cannot open file") ? "[include " + filePath + "] file not found" : err
+        err = err.includes("cannot open file")
+                ? "[include " + filePath + "] file not found"
+                : err
     })
     if (err != "" || newDoc == undefined) {
         return [undefined, err]
@@ -59,4 +69,22 @@ export function isSkipLine(line: string) {
     if (line == "") return true
     return !line.startsWith('[')
     // return !(line.match(/^[!#?]/g) == null)
+}
+
+export function getCustomVariable(varName: string): string | undefined {
+    return vscode.workspace
+            .getConfiguration("lux.variables")
+            .get(varName)
+}
+
+export function getVariableInString(
+    value: string
+): [string | undefined, string | undefined] {
+    const reVar = (/(\${?([-_\w]+)}?)/g).exec(value)
+    
+    if (reVar == null) {
+        return [undefined, undefined]
+    }
+
+    return [reVar[2], reVar[1]]
 }

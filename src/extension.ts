@@ -2,9 +2,6 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import {
-	getExtensionCommands
-} from './util'
 import { LUX_MODE } from './const';
 import { LuxDefinitionProvider } from './declaretion';
 

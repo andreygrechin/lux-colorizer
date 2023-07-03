@@ -38,6 +38,26 @@ To use snippets, start typing a meta statement, like `[loop]`, and VS Code will
 offer possible options. Use TAB to autocomplete a statement and jumping between
 input fields.
 
+## Features
+
+### Go to Declaretion
+
+1. Click into variable or include file path
+2. Press key F12 (Default shortcut)
+
+For include file path with environment variable (e.g. $W $TEST_DIR)
+You need to add custom variable for those variables, by:
+1. Ctrl/Command + Shift + P 
+2. Type "User settings JSON" -> press Enter
+3. Add the below value into the json file opened
+```
+    "lux.envVariables": {
+        "W": "<your_file_path>",
+        "TEST_PATH": "<your_file_path"
+    },
+```
+4. Save the file and retry
+
 ## How to contribute
 
 1. Clone the repo

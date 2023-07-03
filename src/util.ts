@@ -73,7 +73,7 @@ export function isSkipLine(line: string) {
 
 export function getCustomVariable(varName: string): string | undefined {
     return vscode.workspace
-            .getConfiguration("lux.variables")
+            .getConfiguration("lux.envVariables")
             .get(varName)
 }
 

@@ -52,8 +52,8 @@ You need to add custom variable for those variables, by:
 3. Add the below value into the json file opened
 ```
     "lux.envVariables": {
-        "W": "<your_file_path>",
-        "TEST_PATH": "<your_file_path"
+        "W": "<your_absolute_file_path>",
+        "TEST_DIR": "<your_absolute_file_path>"
     },
 ```
 4. Save the file and retry

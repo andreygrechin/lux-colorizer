@@ -48,11 +48,22 @@ async function definitionLocation(
                                  + "[\\s\\]]"))
             break
         case "file":
-            const result = await file_handler(wordType, document)
-            if (result == null) {
-                return Promise.resolve(null)
+            const result = await readFileFromPath(wordType.value, document)
+
+            const newDoc = result[0]
+            const err = result[1]
+        
+            if (err != "" || newDoc == undefined) {
+                throw err
             }
-            return result
+            const defInfo: GoDefinitionInformation = {
+                column: 0,
+                line: 0,
+                file: newDoc.uri.path,
+                name: "",
+                declarationlines: [],
+            }
+            return defInfo
 
         default:
             return Promise.resolve(null)
@@ -88,22 +99,23 @@ async function find_declaretion(
         if (isSkipLine(lineTextTrimed)) {
             continue
         }
-        
-        const included = /^\[include (.+)\]/g.exec(lineTextTrimed)
-        if (included != null) {
-            var result = await openTextDocument(document.uri.path, included[1])
+
+        if (/^\[include (.+)\]/g.exec(lineTextTrimed) != null) {
+            var result = await readFileFromPath(lineTextTrimed, document)
             var newDoc= result[0]
             var err = result[1]
 
             if (err == "" && newDoc != undefined) {
-                var includeResult = await find_declaretion(newDoc, 
+                var includeResult = await find_declaretion(newDoc,
                                                            newDoc.lineCount - 1,
                                                            word,
                                                            regs)
                 if (includeResult != null) {
                     return includeResult
                 }
-            }            
+            } else {
+                throw err
+            }
         }
 
         for (let regIdx = 0; regIdx < regs.length; regIdx++) {
@@ -137,7 +149,7 @@ function getWordFromPosition(
     }
 
     var wType: WordType = {type: undefined, value: word}
-    
+
     // check is file path
     const reFilePath = new RegExp("\\[include\\s+")
     if (lineText.match(reFilePath)) {
@@ -157,7 +169,7 @@ function getWordFromPosition(
     }
 
     // check macro
-    const reMacro = new RegExp("\\[invoke\\s+" + word) 
+    const reMacro = new RegExp("\\[invoke\\s+" + word)
 
     if (lineText.match(reMacro)) {
         wType.type = "macro"
@@ -167,24 +179,22 @@ function getWordFromPosition(
     return undefined
 }
 
-async function file_handler(
-    wordType: WordType,
+async function readFileFromPath(
+    line: string,
     document: vscode.TextDocument,
-): Promise<GoDefinitionInformation | undefined> {
+): Promise<[vscode.TextDocument | any, string]> {
     // for now expecting 1 variable in include statement only
-    const rVar = getVariableInString(wordType.value)
+    const rVar = getVariableInString(line)
     const varName = rVar[0]
     const varRaw = rVar[1]
-    var filePath = getPathFromInclude(wordType.value)
+    var filePath = getPathFromInclude(line)
     if (filePath == undefined) {
         throw "Invalid file path"
     }
 
-    console.log(varName, varRaw, filePath);
-
     if (varName != undefined && varRaw != undefined) {
         var cusVar = getCustomVariable(varName)
-        
+
         if (cusVar == undefined) {
             throw "No custom variable for " + varName
 
@@ -192,21 +202,21 @@ async function file_handler(
 
             // const ERR_NOT_FOUND = "Variable " + varName + " not found"
 
-            // const declareReuslt = 
+            // const declareReuslt =
             //     await find_declaretion(document,
             //                         document.lineCount - 1,
             //                         varName,
             //                         new Array<RegExp>(
             //                             getRegexFindVariable(varName)))
             // console.log("declaretion", declareReuslt);
-            
+
             // if (declareReuslt == undefined) {
             //     throw ERR_NOT_FOUND
             // }
             // const declareDoc = await openTextDocument(declareReuslt.file, "")
-            // const declareTextDoc = declareDoc[0] 
+            // const declareTextDoc = declareDoc[0]
             // const errDoc = declareDoc[1]
-            
+
             // if (errDoc != "" || declareTextDoc == undefined) {
             //     throw errDoc
             // }
@@ -220,28 +230,11 @@ async function file_handler(
             // }
             // cusVar = value[1]
         }
-        
+
         filePath = filePath.replace(varRaw, cusVar)
-        console.log(filePath, cusVar);
-        
     }
 
-    const result = await openTextDocument(document.uri.path, filePath)
-    const newDoc = result[0]
-    const err = result[1]
-    
-    if (err != "" || newDoc == undefined) {
-        throw err
-    }
-    const defInfo: GoDefinitionInformation = {
-        column: 0,
-        line: 0,
-        file: newDoc.uri.path,
-        name: "",
-        declarationlines: [],
-    }
-
-    return defInfo
+    return await openTextDocument(filePath)
 }
 
 function getRegexFindVariable(word: string): RegExp {
@@ -249,15 +242,15 @@ function getRegexFindVariable(word: string): RegExp {
 }
 
 function getValueFromDeclaretion(text: string): string | undefined {
-    const reGetDeclareValue = /\[\w+\s+[-_\w]+\s*=\s*([^\]]+)\]/g 
+    const reGetDeclareValue = /\[\w+\s+[-_\w]+\s*=\s*([^\]]+)\]/g
     const r = reGetDeclareValue.exec(text)
-    return (r == null) ? undefined : r[1] 
+    return (r == null) ? undefined : r[1]
 }
 
 function getPathFromInclude(text: string): string | undefined {
-    const reGetIncludePath = /\[include\s+([^\]\s]+)\s*\]/g 
+    const reGetIncludePath = /\[include\s+([^\]\s]+)\s*\]/g
     const r = reGetIncludePath.exec(text)
-    return (r == null) ? undefined : r[1] 
+    return (r == null) ? undefined : r[1]
 }
 
 export class LuxDefinitionProvider implements vscode.DefinitionProvider {

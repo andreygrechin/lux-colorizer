@@ -39,12 +39,9 @@ export function isPositionInString(
 }
 
 export async function openTextDocument(
-    curPath: string,
-    filePath: string,
+    filePath: string
 ): Promise<[vscode.TextDocument | any, string]> {
-
-    curPath = curPath.substring(0, curPath.lastIndexOf(PATH_SEPERATOR));
-    const uri = vscode.Uri.file(curPath + PATH_SEPERATOR + filePath)
+    const uri = vscode.Uri.file(filePath)
 
     var newDoc: vscode.TextDocument | any = undefined
     var err: string = ""

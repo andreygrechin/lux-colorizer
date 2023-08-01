@@ -11,10 +11,10 @@
 #         "PRE_DIR": ".."
 # },
 [include ${PRE_DIR}/example1.lux]
-[include ${PRE_DIR_2}/example1.lux]
+# [include ${PRE_DIR_2}/example2.lux]
 
 [shell calculator]
-    -$fail_pattern|SH-PROMPT:
+    -$fail_pattern|SH-PROMPT:|$device
     !erl
 
     # Multi-line expect

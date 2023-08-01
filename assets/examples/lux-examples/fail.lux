@@ -2,11 +2,19 @@
 
 [global fail_pattern=[Ee][Rr][Rr][Oo][Rr]]
 [global eprompt=\d+>\s]
+[include loop.lux]
 
 [doc2 Provoke a failure to get something interesting in the logs]
 
+# need to set this in config
+# "lux.variables": {
+#         "PRE_DIR": ".."
+# },
+[include ${PRE_DIR}/example1.lux]
+# [include ${PRE_DIR_2}/example2.lux]
+
 [shell calculator]
-    -$fail_pattern|SH-PROMPT:
+    -$fail_pattern|SH-PROMPT:|$device
     !erl
 
     # Multi-line expect

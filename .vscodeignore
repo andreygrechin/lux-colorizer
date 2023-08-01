@@ -6,3 +6,12 @@ lux/**
 .gitignore
 .vscodeignore
 lux-colorizer.code-workspace
+
+.vscode-test/**
+src/**
+.yarnrc
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts

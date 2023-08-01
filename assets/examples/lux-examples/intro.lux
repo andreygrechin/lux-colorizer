@@ -2,6 +2,7 @@
 
 # Assign a global variable which is accessible in all shells
 [global file=removeme.txt]
+[global test5=removeme.txt]
 
 # Start a shell
 [shell single]

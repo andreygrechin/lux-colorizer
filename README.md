@@ -38,6 +38,36 @@ To use snippets, start typing a meta statement, like `[loop]`, and VS Code will
 offer possible options. Use TAB to autocomplete a statement and jumping between
 input fields.
 
+## Features
+
+### Go to Declaretion
+
+1. Click into variable or include file path
+2. Press key F12 (Default shortcut)
+
+For include file path with environment variable (e.g. $W $TEST_DIR)
+You need to add custom variable for those variables, by:
+1. Ctrl/Command + Shift + P 
+2. Type "User settings JSON" -> press Enter
+3. Add the below value into the json file opened
+```
+    "lux.envVariables": {
+        "W": "<your_absolute_file_path>",
+        "TEST_DIR": "<your_absolute_file_path>"
+    },
+```
+4. Save the file and retry
+
+## How to contribute
+
+1. Clone the repo
+2. Run `npm install`
+3. Add your magic
+4. Test extension (following [this guide](https://code.visualstudio.com/api/working-with-extensions/testing-extension)) 
+5. (optional) To build extension file
+    1. Run `npm install -g @vscode/vsce`
+    2. Run `vsce package` (it will build .vsix file)
+
 ## Useful References
 
 1. Lux

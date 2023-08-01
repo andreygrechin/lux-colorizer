@@ -4,3 +4,9 @@ lux/
 lux_logs/
 
 *.vsix
+
+out
+dist
+node_modules
+.vscode-test/
+*.vsix

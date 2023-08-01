@@ -2,6 +2,13 @@
 
 All notable changes to the "lux-colorizer" extension will be documented in this file.
 
+## [1.0.1] - 2023-07-01
+
+### Added
+
+- Add feature "Go to Declartion"
+- Add lux file icon
+
 ## [1.0.0] - 2023-06-30
 
 ### Added

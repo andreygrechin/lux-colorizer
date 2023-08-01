@@ -232,6 +232,10 @@ async function readFileFromPath(
         }
 
         filePath = filePath.replace(varRaw, cusVar)
+    } else {
+        var curPath = document.uri.path.toString()
+        curPath = curPath.substring(0, curPath.lastIndexOf(PATH_SEPERATOR));
+        filePath = curPath + PATH_SEPERATOR + filePath
     }
 
     return await openTextDocument(filePath)
